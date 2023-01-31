@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
+import 'loginpage.dart';
+
 void main() {
   runApp(const MyApp());
 }
 
-class LogiUI extends StatelessWidget {
-  const LogiUI({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-
-      debugShowCheckedModeBanner: false;
-      title: "Login",
-      theme: ThemeData(
-
-       primarySwatch: Colors.black,
-      ),
-      home login page
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      //
+      //
+      theme: ThemeData(primarySwatch: Colors.grey),
+      home: LoginPage(),
+      
     );
   }
 }
