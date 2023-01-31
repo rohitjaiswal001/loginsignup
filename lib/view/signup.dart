@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:login/homepage.dart';
+import 'package:login/view/homepage.dart';
 
 class Signup extends StatefulWidget {
   Signup({super.key});
