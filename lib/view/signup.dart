@@ -131,7 +131,9 @@ class _SignupState extends State<Signup> {
 
                                         log("===============================>$isvisible");
                                       });
-                                    })),
+                                    })
+                                    
+                                    ),
                           ),
                           SizedBox(
                             height: 20,
@@ -171,7 +173,9 @@ class _SignupState extends State<Signup> {
 
                                           log("===============================>$isvisible");
                                         });
-                                      }))),
+                                      })
+                                      )
+                                      ),
                           SizedBox(
                             height: height / 20,
                           ),

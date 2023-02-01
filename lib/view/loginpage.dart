@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:login/view/forgetpass.dart';
 import 'package:login/view/homepage.dart';
 import 'package:login/view/signup.dart';
 
@@ -148,7 +149,8 @@ class _LoginPageState extends State<LoginPage> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => Signup()));
+                                            builder: (context) =>
+                                                ForgetPass()));
                                   },
                                   child: Align(
                                     alignment: Alignment.topRight,
