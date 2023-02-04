@@ -1,21 +1,15 @@
 import 'dart:developer';
-
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:login/view/homepage.dart';
+import 'package:login/controller/common_controller.dart';
 
-class Signup extends StatefulWidget {
+class Signup extends StatelessWidget {
   Signup({super.key});
 
-  @override
-  State<Signup> createState() => _SignupState();
-}
-
-class _SignupState extends State<Signup> {
-  bool isvisible = true;
-  bool cisvisible = true;
   FocusNode remailfocus = FocusNode();
-
+  final _commonController = Get.put(CommonController());
   FocusNode passkeyfocus = FocusNode();
   FocusNode cpasskeyfocus = FocusNode();
   @override
@@ -99,7 +93,7 @@ class _SignupState extends State<Signup> {
                               FocusScope.of(context)
                                   .requestFocus(cpasskeyfocus);
                             },
-                            obscureText: isvisible,
+                            obscureText: _commonController.cisvisible.value,
                             decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white,
@@ -119,28 +113,23 @@ class _SignupState extends State<Signup> {
                                 ),
                                 suffixIcon: IconButton(
                                     icon: Icon(
-                                      isvisible
+                                      _commonController.isVisible.value
                                           ? Icons.visibility
                                           // ignore: dead_code
                                           : Icons.visibility_off,
                                       color: Colors.black,
                                     ),
                                     onPressed: () {
-                                      setState(() {
-                                        isvisible = !isvisible;
-
-                                        log("===============================>$isvisible");
-                                      });
-                                    })
-                                    
-                                    ),
+                                      _commonController.isVisible.value =
+                                          !_commonController.isVisible.value;
+                                    })),
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           TextField(
                               focusNode: cpasskeyfocus,
-                              obscureText: cisvisible,
+                              obscureText: _commonController.cisvisible.value,
                               decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.white,
@@ -161,21 +150,16 @@ class _SignupState extends State<Signup> {
                                   ),
                                   suffixIcon: IconButton(
                                       icon: Icon(
-                                        cisvisible
+                                        _commonController.cisvisible.value
                                             ? Icons.visibility
                                             : Icons.visibility_off,
                                         // Icons.remove_red_eye,
                                         color: Colors.black,
                                       ),
                                       onPressed: () {
-                                        setState(() {
-                                          cisvisible = !cisvisible;
-
-                                          log("===============================>$isvisible");
-                                        });
-                                      })
-                                      )
-                                      ),
+                                        _commonController.cisvisible.value =
+                                            !_commonController.cisvisible.value;
+                                      }))),
                           SizedBox(
                             height: height / 20,
                           ),
@@ -185,10 +169,12 @@ class _SignupState extends State<Signup> {
                                     Color.fromARGB(255, 232, 232, 230)),
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomePage()));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => HomePage()));
+
+                                Get.to(HomePage());
                               },
                               child: Text("Register",
                                   style: TextStyle(

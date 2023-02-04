@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:login/route.dart';
+import 'package:login/view/homepage.dart';
 
 import 'view/loginpage.dart';
 
@@ -12,12 +15,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       //
       //
       theme: ThemeData(primarySwatch: Colors.grey),
-      home: LoginPage(),
+      //
+      // home: LoginPage(),
+
+      home: LoginPage().storage == null ? LoginPage() : const HomePage(),
+      getPages: getPages,
     );
   }
 }

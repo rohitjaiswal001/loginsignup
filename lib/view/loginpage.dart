@@ -1,30 +1,32 @@
 import 'dart:developer';
-
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:login/controller/common_controller.dart';
 import 'package:login/view/forgetpass.dart';
 import 'package:login/view/homepage.dart';
 import 'package:login/view/signup.dart';
 
-class LoginPage extends StatefulWidget {
+// ignore: must_be_immutable
+class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
   FocusNode emailfocus = FocusNode();
+
+  final _commonController = Get.put(CommonController());
 
   FocusNode passkeyfocus = FocusNode();
 
   var size, height, width;
 
-  bool isvisible = true;
+  var emailEditingController = TextEditingController();
+
+  var storage = GetStorage();
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.white, // status bar color
@@ -37,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
-        //FocusManager.instance.primaryFocus?.unfocus();
+        //FocusManssager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -66,13 +68,14 @@ class _LoginPageState extends State<LoginPage> {
                         Image.asset("assets/image/logoicon.png",
                             fit: BoxFit.cover, height: height / 6),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Column(
                             children: [
                               SizedBox(
                                 height: height / 20,
                               ),
                               TextField(
+                                controller: emailEditingController,
                                 focusNode: emailfocus,
                                 onSubmitted: (value) {
                                   FocusScope.of(context)
@@ -82,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.black, width: 1.0),
                                   ),
@@ -93,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   hintText: 'Enter your Email ',
                                   labelText: 'Email ID',
-                                  prefixIcon: Icon(
+                                  prefixIcon: const Icon(
                                     Icons.person,
                                     color: Colors.black,
                                   ),
@@ -102,55 +105,62 @@ class _LoginPageState extends State<LoginPage> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              TextField(
-                                obscureText: isvisible,
-                                focusNode: passkeyfocus,
-                                //autofocus: true,
-                                decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    // border: OutlineInputBorder(
+                              Obx(
+                                () => TextField(
+                                  obscureText:
+                                      _commonController.isVisible.value,
+                                  focusNode: passkeyfocus,
+                                  //autofocus: true,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      // border: OutlineInputBorder(
 
-                                    // ),
+                                      // ),
 
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.black, width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade400,
-                                          width: 1.0),
-                                    ),
-                                    hintText: 'Enter your password',
-                                    labelText: 'Password',
-                                    prefixIcon: Icon(
-                                      Icons.lock,
-                                      color: Colors.black,
-                                    ),
-                                    suffixIcon: IconButton(
-                                        icon: Icon(
-                                          isvisible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            isvisible = !isvisible;
-
-                                            log("=================fggfg==============>$isvisible");
-                                          });
-                                        })),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.black, width: 1.0),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade400,
+                                            width: 1.0),
+                                      ),
+                                      hintText: 'Enter your password',
+                                      labelText: 'Password',
+                                      prefixIcon: Icon(
+                                        Icons.lock,
+                                        color: Colors.black,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          icon: Obx(() => Icon(
+                                                _commonController
+                                                        .isVisible.value
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                                color: Colors.black,
+                                              )),
+                                          onPressed: () {
+                                            _commonController.isVisible.value =
+                                                !_commonController
+                                                    .isVisible.value;
+                                          })),
+                                ),
                               ),
                               TextButton(
                                   onPressed: () {
                                     //FocusManager.instance.primaryFocus ?.unfocus();
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ForgetPass()));
+                                    //
+                                    //
+                                    //
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             ForgetPass()));
+
+                                    Get.to(ForgetPass());
                                   },
                                   child: Align(
                                     alignment: Alignment.topRight,
@@ -167,12 +177,22 @@ class _LoginPageState extends State<LoginPage> {
                                   width: 100,
                                   child: ElevatedButton(
                                     onPressed: () {
+                                      //
+                                      //
+
+                                      ///Gurpreet
+                                      ///
+                                      storage.write(
+                                          "email", emailEditingController.text.toString().trim());
+                                      
                                       // FocusManager.instance.primaryFocus ?.unfocus();
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomePage()));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             HomePage()));
+                                      _commonController.isVisible.value = true;
+                                      Get.to(HomePage());
                                     },
 
                                     // style: ElevatedButton.styleFrom(
@@ -197,12 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Center(
                                     child: TextButton(
                                         onPressed: () {
-                                          //FocusManager.instance.primaryFocus ?.unfocus();
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Signup()));
+                                          Get.to(Signup());
                                         },
                                         child: Text("Signup",
                                             style: TextStyle(
