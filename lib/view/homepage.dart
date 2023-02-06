@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:login/controller/common_controller.dart';
 import 'package:login/view/loginpage.dart';
 
 import '../helper/storage_helper.dart';
@@ -21,11 +20,10 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               StorageHelper.readData("email");
 
-              log('=================Read=============> [Clicked]');
+              log('=================Read=============> [Clicked] ${StorageHelper.readData("email")}');
               StorageHelper.eraseData();
 
-              StorageHelper.readData("email");
-              log('=================erase=============> [Clicked]');
+              log('=================erase=============> [Clicked]${StorageHelper.readData("email")}');
               Get.offAll(LoginPage());
             },
             child: const Text("Logout")),

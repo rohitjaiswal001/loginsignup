@@ -5,14 +5,13 @@ import 'package:get/get.dart';
 import 'package:login/app_routes/page_routes.dart';
 import 'package:login/controller/common_controller.dart';
 import 'package:login/helper/storage_helper.dart';
-import 'package:login/view/homepage.dart';
 import 'package:login/view/signup.dart';
 import 'package:login/util/common_text_controller.dart';
 
 import 'forgetpass.dart';
 
 // ignore: must_be_immutable
-class LoginPage extends StatelessWidget{
+class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   final _commonController = Get.put(CommonController());
@@ -66,8 +65,7 @@ class LoginPage extends StatelessWidget{
                               height: height / 20,
                             ),
                             TextField(
-                              controller:
-                                  emailController,
+                              controller: emailController,
                               //  focusNode: emailfocus,
                               onSubmitted: (value) {
                                 // FocusScope.of(context)
@@ -153,7 +151,7 @@ class LoginPage extends StatelessWidget{
                                 },
                                 child: Align(
                                   alignment: Alignment.topRight,
-                                  child: Text("For< Password",
+                                  child: Text("Forget Password",
                                       style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.grey.shade700)),
@@ -171,12 +169,8 @@ class LoginPage extends StatelessWidget{
 
                                     ///Gurpreet
                                     ///
-                                    StorageHelper.writeData(
-                                        "email",
-                                        emailController
-                                            .text
-                                            .toString()
-                                            .trim());
+                                    StorageHelper.writeData("email",
+                                        emailController.text.toString().trim());
                                     log("email===> ${StorageHelper.readData("email")},,,,    ${emailController.text.toString().trim()}");
                                     // FocusManager.instance.primaryFocus ?.unfocus();
                                     // Navigator.push(
