@@ -9,32 +9,24 @@ import 'package:login/view/loginpage.dart';
 class ForgetPass extends StatelessWidget {
   ForgetPass({super.key});
   final _commonController = Get.put(CommonController());
-  @override
-  FocusNode remailfocus = FocusNode();
-
-  FocusNode passkeyfocus = FocusNode();
-  FocusNode cpasskeyfocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.white, // status bar color
     ));
-    var size = MediaQuery.of(context).size;
-    var height = size.height;
-    var width = size.width;
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          // height: MediaQuery.of(context).size.height,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+         width: Get.width,
+          height: Get.height,
           child: Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -50,12 +42,12 @@ class ForgetPass extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: height / 20,
+                            height: Get.height / 20,
                           ),
                           Image.asset("assets/image/logoicon.png",
-                              fit: BoxFit.cover, height: height / 6),
+                              fit: BoxFit.cover, height: Get.height / 6),
                           SizedBox(
-                            height: height / 50,
+                            height: Get.height / 50,
                           ),
                           Obx(
                             () => Visibility(
@@ -66,7 +58,7 @@ class ForgetPass extends StatelessWidget {
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
+                                      focusedBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: Colors.black, width: 1.0),
                                       ),
@@ -84,13 +76,13 @@ class ForgetPass extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: height / 20,
+                                    height: Get.height / 20,
                                   ),
                                   ElevatedButton(
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(
-                                                Color.fromARGB(
+                                                const Color.fromARGB(
                                                     255, 232, 232, 230)),
                                       ),
                                       onPressed: () {
@@ -103,12 +95,12 @@ class ForgetPass extends StatelessWidget {
                                       // Navigator.push(context,
                                       //     MaterialPageRoute(builder: (context) => LoginPage()));
 
-                                      child: Text(" Submit")),
+                                      child: const Text(" Submit")),
                                 ],
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           //
@@ -134,7 +126,8 @@ class ForgetPass extends StatelessWidget {
                                         decoration: InputDecoration(
                                             filled: true,
                                             fillColor: Colors.white,
-                                            focusedBorder: OutlineInputBorder(
+                                            focusedBorder:
+                                                const OutlineInputBorder(
                                               borderSide: BorderSide(
                                                   color: Colors.black,
                                                   width: 1.0),
@@ -163,20 +156,22 @@ class ForgetPass extends StatelessWidget {
                                                 })),
                                       ),
                                       SizedBox(
-                                        height: height / 40,
+                                        height: Get.height / 40,
                                       ),
                                       TextFormField(
                                         obscureText:
                                             _commonController.cisvisible.value,
-                                        focusNode: passkeyfocus,
+                                        focusNode:
+                                            _commonController.cpasskeyfocus,
                                         onFieldSubmitted: (value) {
-                                          FocusScope.of(context)
-                                              .requestFocus(cpasskeyfocus);
+                                          FocusScope.of(context).requestFocus(
+                                              _commonController.cpasskeyfocus);
                                         },
                                         decoration: InputDecoration(
                                             filled: true,
                                             fillColor: Colors.white,
-                                            focusedBorder: OutlineInputBorder(
+                                            focusedBorder:
+                                                const OutlineInputBorder(
                                               borderSide: BorderSide(
                                                   color: Colors.black,
                                                   width: 1.0),
@@ -210,13 +205,13 @@ class ForgetPass extends StatelessWidget {
                                             ),
                                       ),
                                       SizedBox(
-                                        height: height / 20,
+                                        height: Get.height / 20,
                                       ),
                                       ElevatedButton(
                                           style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStateProperty.all(
-                                                    Color.fromARGB(
+                                                    const Color.fromARGB(
                                                         255, 232, 232, 230)),
                                           ),
                                           onPressed: () {
@@ -231,7 +226,7 @@ class ForgetPass extends StatelessWidget {
                                             //         builder: (con                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             text) =>
                                             //             LoginPage()));
                                           },
-                                          child: Text("Submit"))
+                                          child: const Text("Submit"))
                                     ],
                                   ),
                                 ),
@@ -239,7 +234,7 @@ class ForgetPass extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: height / 20,
+                            height: Get.height / 20,
                           ),
                         ],
                       ),

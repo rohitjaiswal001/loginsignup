@@ -5,28 +5,30 @@ import 'package:get/get.dart';
 import 'package:login/controller/common_controller.dart';
 import 'package:login/view/loginpage.dart';
 
+import '../helper/storage_helper.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        width: Get.width,
+        height: Get.height,
+        alignment: Alignment.center,
         child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Color.fromARGB(255, 232, 232, 230)),
-            ),
             onPressed: () {
-              var reading = LoginPage().storage.read("email");
-              log('bbbbbbbbbbbbbbbbbbbbbbb$reading');
+              StorageHelper.readData("email");
 
-            LoginPage().storage.remove('email');
+              log('=================Read=============> [Clicked]');
+              StorageHelper.eraseData();
 
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+              StorageHelper.readData("email");
+              log('=================erase=============> [Clicked]');
+              Get.offAll(LoginPage());
             },
-            child: Text("Logout")),
+            child: const Text("Logout")),
       ),
     );
   }

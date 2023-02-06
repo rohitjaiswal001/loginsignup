@@ -23,14 +23,14 @@ class Signup extends StatelessWidget {
     var height = size.height;
     var width = size.width;
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: Container(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
           // height: MediaQuery.of(context).size.height,
           child: Center(
             child: SingleChildScrollView(
