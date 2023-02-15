@@ -1,13 +1,15 @@
 import 'dart:developer';
+import 'package:login/helper/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:login/app_routes/page_routes.dart';
 import 'package:login/controller/common_controller.dart';
 import 'package:login/helper/storage_helper.dart';
-import 'package:login/view/signup.dart';
-import 'package:login/util/common_text_controller.dart';
-
+import 'package:login/model/loginmodel.dart';
+import 'package:login/view/auth/signup.dart';
+import 'package:login/util/email_pass_controller.dart';
+import 'dart:html';
 import 'forgetpass.dart';
 
 // ignore: must_be_immutable
@@ -25,7 +27,6 @@ class LoginPage extends StatelessWidget {
       statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.white, // status bar color
     ));
-
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
@@ -97,6 +98,7 @@ class LoginPage extends StatelessWidget {
                             Obx(
                               () => TextField(
                                 obscureText: _commonController.isVisible.value,
+                                controller: passwordController,
                                 //  focusNode: passkeyfocus,
                                 //autofocus: true,
                                 decoration: InputDecoration(
@@ -163,11 +165,11 @@ class LoginPage extends StatelessWidget {
                                 height: 40,
                                 width: 100,
                                 child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     //
                                     //
 
-                                    ///Gurpreet
+                                    ///
                                     ///
                                     StorageHelper.writeData("email",
                                         emailController.text.toString().trim());
@@ -178,11 +180,20 @@ class LoginPage extends StatelessWidget {
                                     //     MaterialPageRoute(
                                     //         builder: (context) =>
                                     //             HomePage()));
-                                    _commonController.isVisible.value = true;
-                                    emailController.clear();
-                                    Get.offAllNamed(PageRoutes.home);
-                                  },
 
+                                    //functin call for API   LOGIN
+
+                                    await ApiService().callloginapi(
+                                      emailController.text.toString(),
+                                      //  passwordController.text.toString()
+                                    );
+
+                                    //
+
+                                    _commonController.isVisible.value = true;
+
+                                    //Get.offAllNamed(PageRoutes.home);
+                                  },
                                   // style: ElevatedButton.styleFrom(
                                   //     backgroundColor:
                                   //         Color.fromRGBO(250, 250, 250, 0)),
@@ -212,7 +223,7 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             )
                           ],

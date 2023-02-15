@@ -1,8 +1,6 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'dart:html';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class CommonController extends GetxController {
   RxBool isVisible = true.obs;
@@ -30,5 +28,3 @@ class CommonController extends GetxController {
     super.dispose();
   }
 }
-
-

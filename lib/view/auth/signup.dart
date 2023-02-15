@@ -2,8 +2,11 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:login/view/homepage.dart';
+import 'package:login/util/email_pass_controller.dart';
+import 'package:login/view/home/homepage.dart';
 import 'package:login/controller/common_controller.dart';
+
+import '../../helper/api_service.dart';
 
 class Signup extends StatelessWidget {
   Signup({super.key});
@@ -55,6 +58,7 @@ class Signup extends StatelessWidget {
                             height: height / 20,
                           ),
                           TextField(
+                            controller: emailController,
                             focusNode: remailfocus,
                             onSubmitted: (value) {
                               FocusScope.of(context).requestFocus(passkeyfocus);
@@ -168,13 +172,20 @@ class Signup extends StatelessWidget {
                                 backgroundColor: MaterialStateProperty.all(
                                     Color.fromARGB(255, 232, 232, 230)),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                //functin call for API   REGISTER
+
+                                await ApiService().callregapi(
+                                  emailController.text.toString(),
+                                  //  passwordController.text.toString()
+                                );
+
                                 // Navigator.push(
                                 //     context,
                                 //     MaterialPageRoute(
                                 //         builder: (context) => HomePage()));
 
-                                Get.to(HomePage());
+                                // Get.to(HomePage());
                               },
                               child: Text("Register",
                                   style: TextStyle(

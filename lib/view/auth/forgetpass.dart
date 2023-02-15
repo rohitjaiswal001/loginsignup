@@ -1,10 +1,11 @@
 import 'dart:developer';
+import 'dart:html';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:login/controller/common_controller.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:login/view/loginpage.dart';
+import 'package:login/view/auth/loginpage.dart';
 
 class ForgetPass extends StatelessWidget {
   ForgetPass({super.key});
@@ -52,6 +53,7 @@ class ForgetPass extends StatelessWidget {
                           Obx(
                             () => Visibility(
                               visible: !_commonController.isEnabled.value,
+
                               child: Column(
                                 children: [
                                   TextField(
