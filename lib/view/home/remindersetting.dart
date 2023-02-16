@@ -148,27 +148,35 @@ class _ReminderSetState extends State<ReminderSet> {
                         borderSide: BorderSide(color: Colors.grey, width: 1.0),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
-                      prefixIcon: Icon(
-                        Icons.calendar_month,
-                        color: Colors.black,
-                      ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(" Date"),
-                          Text(
-                            ("${getMonth}${dateOfDay.day}, ${dateOfDay.year} ")
-                                .toString(),
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
+                    child: Row(
+                      children: [
+                        Container(
+                          child: Icon(
+                            Icons.calendar_month,
+                            color: Colors.black,
                           ),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(child: Text(" Date")),
+                              Container(
+                                child: Text(
+                                  ("${getMonth}${dateOfDay.day}, ${dateOfDay.year} ")
+                                      .toString(),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -204,20 +212,17 @@ class _ReminderSetState extends State<ReminderSet> {
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Time"),
-                              Text(
-                                _timeOfDay
-                                    .format(context)
-                                    .toString(), //calling variable for time
-                                style: const TextStyle(fontSize: 15),
-                              ),
-                            ]),
-                      ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Time"),
+                            Text(
+                              _timeOfDay
+                                  .format(context)
+                                  .toString(), //calling variable for time
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ]),
                     )),
               ),
               SizedBox(
