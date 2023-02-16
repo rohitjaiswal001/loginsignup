@@ -9,7 +9,8 @@ import 'package:login/helper/storage_helper.dart';
 import 'package:login/model/loginmodel.dart';
 import 'package:login/view/auth/signup.dart';
 import 'package:login/util/email_pass_controller.dart';
-import 'dart:html';
+import 'package:login/view/home/homepage.dart';
+
 import 'forgetpass.dart';
 
 // ignore: must_be_immutable
@@ -183,13 +184,12 @@ class LoginPage extends StatelessWidget {
 
                                     //functin call for API   LOGIN
 
-                                    await ApiService().callloginapi(
-                                      emailController.text.toString(),
-                                      //  passwordController.text.toString()
-                                    );
+                                    // xcxzczxczxcz                          // await ApiService().callloginapi(
+                                    //  zxczxczxzxczcz                        //   emailController.text.toString(),);
+                                    //  passwordController.text.toString()
 
                                     //
-
+                                    Get.to(HomePage());
                                     _commonController.isVisible.value = true;
 
                                     //Get.offAllNamed(PageRoutes.home);
