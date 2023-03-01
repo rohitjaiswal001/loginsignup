@@ -11,6 +11,8 @@ class CommonController extends GetxController {
 
   FocusNode? remailfocus, passkeyfocus, cpasskeyfocus;
 
+  var screenIndex;
+
   @override
   void onInit() {
     remailfocus = FocusNode();
@@ -27,4 +29,7 @@ class CommonController extends GetxController {
     cpasskeyfocus!.dispose();
     super.dispose();
   }
+
+
+
 }

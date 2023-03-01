@@ -2,9 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:login/util/colors.dart';
 
 import 'package:login/view/home/homepage.dart';
+
+import 'package:login/controller/detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReminderSet extends StatefulWidget {
   ReminderSet({super.key});
@@ -15,13 +19,14 @@ class ReminderSet extends StatefulWidget {
 
 class _ReminderSetState extends State<ReminderSet> {
   var colcall = Colors.white;
+  int colorIndex = 0;
 
   bool colValue = false;
   int colIndex = 0;
+  var colcode;
 
   DateTime dateOfDay = DateTime.now();
   // var m = dateOfDay.month;
-
   List<String> monthname = [
     "January",
     " Feburary ",
@@ -36,6 +41,14 @@ class _ReminderSetState extends State<ReminderSet> {
     "Noember",
     "December"
   ];
+  int count = 0;
+  void _incrementCounter() {
+    setState(() {
+      count++;
+      MoveDetails().countbox.write('count', MoveDetails().count.toString());
+    });
+  }
+
   var index;
   Color timeContainerColor = Colors.grey;
   var getMonth;
@@ -49,7 +62,8 @@ class _ReminderSetState extends State<ReminderSet> {
 
   DateTime? newDate;
   getDAte() async {
-    newDate = await showDatePicker(
+    newDate = await showDatePicker( 
+      
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2000),
@@ -60,6 +74,11 @@ class _ReminderSetState extends State<ReminderSet> {
     });
   }
 
+  int i = 0;
+
+  final _movingController = Get.put(MoveDetails());
+
+  // final colcall= Get.put(variab)
   //Color addcolor = Colors.white;
   TimeOfDay _timeOfDay = TimeOfDay.now();
 
@@ -79,6 +98,7 @@ class _ReminderSetState extends State<ReminderSet> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+
         // shadowColor: null,
         backgroundColor: Colors.white10,
         title: Text("  "),
@@ -103,20 +123,21 @@ class _ReminderSetState extends State<ReminderSet> {
                   horizontal: 10,
                 ),
                 child: TextFormField(
+                    controller: _movingController.movingController,
                     decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  hintText: 'Titile ',
-                  labelText: 'Title',
-                )),
+                      filled: true,
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      hintText: 'Titile ',
+                      labelText: 'Title',
+                    )),
               ),
               SizedBox(
                 height: 20,
@@ -231,6 +252,7 @@ class _ReminderSetState extends State<ReminderSet> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextFormField(
+                  controller: _movingController.messageController,
                   style: const TextStyle(fontSize: 15),
                   decoration: const InputDecoration(
                     filled: true,
@@ -269,7 +291,17 @@ class _ReminderSetState extends State<ReminderSet> {
                           InkWell(
                             onTap: () {
                               setState(() {
-                                colcall = ColArr().colorArray[index];
+                                colcode = ColArr().colorcode[index];
+                                colcall = Color(colcode);
+                                colorIndex = index;
+                                //_movingController.colorcontroller = colcode;
+//
+                                // colcall = ColArr().colorArray[index];
+
+                                // _movingController.colorcontroller =
+                                //     ColArr().colorArray[index];
+
+                                // i = index;
 
                                 colValue = !colValue;
                                 colIndex = index;
@@ -337,7 +369,33 @@ class _ReminderSetState extends State<ReminderSet> {
                         primary: Colors.blue,
                         onPrimary: Colors.white,
                         elevation: 1),
-                    onPressed: () {
+                    onPressed: () async {
+                      _incrementCounter;
+                      MoveDetails().boxx.write(
+                          'title',
+                          MoveDetails()
+                              .movingController
+                              .text
+                              .toString()
+                              .trim());
+
+                      MoveDetails().boxx.write(
+                          'message',
+                          MoveDetails()
+                              .messageController
+                              .text
+                              .toString()
+                              .trim());
+                      log("ggdgdgdgfgdfgd          ===========>   ${_movingController.movingController.text.toString()}  ");
+
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setInt('color', colorIndex);
+                      print("===================>${colcall.value}");
+                      // MoveDetails()
+                      //     .cardbackgroundcolor
+                      //     .write('colorname', MoveDetails().colorcontroller);
+                      // log("ggdgdgdgfgdfgd      colorrrrrrr    ===========>   ${colcode}  ");
                       Get.to(HomePage());
                     },
                     child: Text(

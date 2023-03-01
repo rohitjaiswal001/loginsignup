@@ -167,6 +167,9 @@ class LoginPage extends StatelessWidget {
                                 width: 100,
                                 child: ElevatedButton(
                                   onPressed: () async {
+                                    Get.offAll(HomePage(
+                                        // colValue: Colors.white,
+                                        ));
                                     //
                                     //
 
@@ -189,7 +192,7 @@ class LoginPage extends StatelessWidget {
                                     //  passwordController.text.toString()
 
                                     //
-                                    Get.to(HomePage());
+
                                     _commonController.isVisible.value = true;
 
                                     //Get.offAllNamed(PageRoutes.home);
