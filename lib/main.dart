@@ -3,13 +3,16 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:login/app_routes/page_routes.dart';
 import 'package:login/helper/storage_helper.dart';
-import 'package:login/view/auth/loginpage.dart';
-import 'package:login/view/home/homepage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'app_routes/page_generated.dart';
 
-void main() async {
-  await GetStorage.init(); //get storage initialization
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  await GetStorage.init();
   runApp(const MyApp());
 }
 

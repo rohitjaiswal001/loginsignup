@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +12,7 @@ import '../../helper/api_service.dart';
 
 class Signup extends StatelessWidget {
   Signup({super.key});
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   FocusNode remailfocus = FocusNode();
   final _commonController = Get.put(CommonController());
@@ -24,7 +28,8 @@ class Signup extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
-
+    String? password;
+    String? username;
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -57,6 +62,9 @@ class Signup extends StatelessWidget {
                             height: height / 20,
                           ),
                           TextField(
+                            onChanged: (value) {
+                              username = value;
+                            },
                             controller: emailController,
                             focusNode: remailfocus,
                             onSubmitted: (value) {
@@ -91,6 +99,10 @@ class Signup extends StatelessWidget {
                             height: 20,
                           ),
                           TextField(
+                            controller: passwordController,
+                            onChanged: (value) {
+                              password = value;
+                            },
                             focusNode: passkeyfocus,
                             onSubmitted: (value) {
                               FocusScope.of(context)
@@ -172,12 +184,21 @@ class Signup extends StatelessWidget {
                                     Color.fromARGB(255, 232, 232, 230)),
                               ),
                               onPressed: () async {
+                                await users
+                                    .add({
+                                      'name': emailController.text,
+                                      'password': passwordController.text,
+                                    })
+                                    .then((value) => print("User Added"))
+                                    .catchError((error) =>
+                                        print("Failed to add user: $error"));
+
                                 //functin call for API   REGISTER
 
-                                await ApiService().callregapi(
-                                  emailController.text.toString(),
-                                  //  passwordController.text.toString()
-                                );
+                                // await ApiService().callregapi(
+                                //   emailController.text.toString(),
+                                //   //  passwordController.text.toString()
+                                // );
 
                                 // Navigator.push(
                                 //     context,
