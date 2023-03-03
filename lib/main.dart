@@ -16,6 +16,8 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 ///----------------------///
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -23,13 +25,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
 
       theme: ThemeData(primarySwatch: Colors.grey),
       //
       initialRoute: StorageHelper.readData("email").toString().isEmpty
-          ? PageRoutes.reminderset
-          : PageRoutes.reminderset,
+          ? PageRoutes.login
+          : PageRoutes.login,
 
       // home: 1 == 2 ? LoginPage() : HomePage(),
       // getPages: getPages,

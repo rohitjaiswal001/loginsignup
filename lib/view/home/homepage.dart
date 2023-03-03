@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,6 +41,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //final user = FirebaseAuth.instance.currentUser!;    // gets current user dertail
+
     //color = _movingController.cardbackgroundcolor.read('colorname');
     return Scaffold(
       appBar: AppBar(
@@ -84,6 +87,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
               onPressed: () {
+                FirebaseAuth.instance.signOut();
                 log("color==============>${_movingController.cardbackgroundcolor.read('colorname')}");
                 // StorageHelper.readData("email");
                 log("=================count =========================count${MoveDetails().countbox.read('count')}");
@@ -94,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                 // log('=================erase=============> [Clicked]${StorageHelper.readData("email")}');
                 Get.offAll(LoginPage());
               },
-              child: Text("Logout"),
+              child: const Text("Logout"),
             ),
           ],
         ),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,12 +13,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ReminderSet extends StatefulWidget {
   ReminderSet({super.key});
-
+ 
   @override
   State<ReminderSet> createState() => _ReminderSetState();
 }
 
 class _ReminderSetState extends State<ReminderSet> {
+  CollectionReference carddetails = FirebaseFirestore.instance.collection('carddetails');
   var colcall = Colors.white;
   int colorIndex = 0;
 
@@ -370,6 +372,15 @@ class _ReminderSetState extends State<ReminderSet> {
                         onPrimary: Colors.white,
                         elevation: 1),
                     onPressed: () async {
+                                await carddetails
+                                    .add({
+                                      'title': _movingController.movingController.text,
+                                      'message':_movingController.messageController.text,
+                                    })
+                                    .then((value) => print("User Added"))
+                                    .catchError((error) =>
+                                        print("Failed to add user: $error"));
+
                       _incrementCounter;
                       MoveDetails().boxx.write(
                           'title',
@@ -396,6 +407,9 @@ class _ReminderSetState extends State<ReminderSet> {
                       //     .cardbackgroundcolor
                       //     .write('colorname', MoveDetails().colorcontroller);
                       // log("ggdgdgdgfgdfgd      colorrrrrrr    ===========>   ${colcode}  ");
+                     
+                     
+                     
                       Get.to(HomePage());
                     },
                     child: Text(

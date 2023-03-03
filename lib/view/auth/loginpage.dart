@@ -1,28 +1,29 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:login/helper/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:login/app_routes/page_routes.dart';
-import 'package:login/controller/common_controller.dart';
-import 'package:login/helper/storage_helper.dart';
-import 'package:login/model/loginmodel.dart';
-import 'package:login/view/auth/signup.dart';
-import 'package:login/util/email_pass_controller.dart';
-import 'package:login/view/home/homepage.dart';
+import 'package:login/view/Auth/forgetpass.dart';
+import 'package:login/view/Auth/signup.dart';
 
-import 'forgetpass.dart';
+import '../home/homepage.dart';
 
-// ignore: must_be_immutable
-class LoginPage extends StatelessWidget {
-  
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
-  final _commonController = Get.put(CommonController());
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  FocusNode emailfocus = FocusNode();
+
+  FocusNode passkeyfocus = FocusNode();
 
   var size, height, width;
+
+  bool isvisible = true;
+  bool otpvisibile = false;
+  bool mobilevisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -31,87 +32,61 @@ class LoginPage extends StatelessWidget {
       statusBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.white, // status bar color
     ));
+
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        height: Get.height,
-        width: Get.width,
-        color: Colors.white,
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Card(
-                  color: Colors.grey.shade100,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: height / 20,
-                      ),
-                      Image.asset("assets/image/logoicon.png",
-                          fit: BoxFit.cover, height: height / 6),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: height / 20,
-                            ),
-                            TextField(
-                              controller: emailController,
-                              //  focusNode: emailfocus,
-                              onSubmitted: (value) {
-                                // FocusScope.of(context)
-                                //     .requestFocus(passkeyfocus);
-                              },
-                              //autofocus: true,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.black, width: 1.0),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey.shade400, width: 1.0),
-                                ),
-                                hintText: 'Enter your Email ',
-                                labelText: 'Email ID',
-                                prefixIcon: const Icon(
-                                  Icons.person,
-                                  color: Colors.black,
-                                ),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        //FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              //crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: height / 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Card(
+                    color: Colors.grey.shade100,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: height / 20,
+                        ),
+                        Image.asset("assets/image/logoicon.png",
+                            fit: BoxFit.cover, height: height / 6),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: height / 20,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Obx(
-                              () => TextField(
-                                obscureText: _commonController.isVisible.value,
-                                controller: passwordController,
-                                //  focusNode: passkeyfocus,
-                                //autofocus: true,
-                                decoration: InputDecoration(
+                              Visibility(
+                                visible: mobilevisible,
+                                child: TextField(
+                                  focusNode: emailfocus,
+                                  onSubmitted: (value) {
+                                    FocusScope.of(context)
+                                        .requestFocus(passkeyfocus);
+                                  },
+                                  //autofocus: true,
+                                  decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
-                                    // border: OutlineInputBorder(
-
-                                    // ),
-
                                     focusedBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.black, width: 1.0),
@@ -121,127 +96,166 @@ class LoginPage extends StatelessWidget {
                                           color: Colors.grey.shade400,
                                           width: 1.0),
                                     ),
-                                    hintText: 'Enter your password',
-                                    labelText: 'Password',
-                                    prefixIcon: Icon(
-                                      Icons.lock,
+                                    hintText: 'Enter your Mobile no. ',
+                                    labelText: 'Mobile no.',
+                                    prefixIcon: const Icon(
+                                      Icons.person,
                                       color: Colors.black,
                                     ),
-                                    suffixIcon: IconButton(
-                                        icon: Obx(() => Icon(
-                                              _commonController.isVisible.value
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                              color: Colors.black,
-                                            )),
-                                        onPressed: () {
-                                          _commonController.isVisible.value =
-                                              !_commonController
-                                                  .isVisible.value;
-                                        })),
-                              ),
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  //FocusManager.instance.primaryFocus ?.unfocus();
-                                  //
-                                  //
-                                  //
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             For<Pass()));
-
-                                  Get.to(ForgetPass());
-                                },
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: Text("Forget Password",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.grey.shade700)),
-                                )),
-                            SizedBox(
-                              height: height / 100,
-                            ),
-                            SizedBox(
-                                height: 40,
-                                width: 100,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    Get.offAll(HomePage(
-                                        // colValue: Colors.white,
-                                        ));
-                                    //
-                                    //
-
-                                    ///
-                                    ///
-                                    StorageHelper.writeData("email",
-                                        emailController.text.toString().trim());
-                                    log("email===> ${StorageHelper.readData("email")},,,,    ${emailController.text.toString().trim()}");
-                                    // FocusManager.instance.primaryFocus ?.unfocus();
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             HomePage()));
-
-                                    //functin call for API   LOGIN
-
-                                    // xcxzczxczxcz                          // await ApiService().callloginapi(
-                                    //  zxczxczxzxczcz                        //   emailController.text.toString(),);
-                                    //  passwordController.text.toString()
-
-                                    //
-
-                                    _commonController.isVisible.value = true;
-
-                                    //Get.offAllNamed(PageRoutes.home);
-                                  },
-                                  // style: ElevatedButton.styleFrom(
-                                  //     backgroundColor:
-                                  //         Color.fromRGBO(250, 250, 250, 0)),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Color.fromARGB(255, 232, 232, 230)),
                                   ),
-                                  child: Text("Login"),
-                                )),
-                            SizedBox(
-                              height: height / 100,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Don't have account",
-                                    style: TextStyle(fontSize: 15)),
-                                Center(
-                                  child: TextButton(
-                                      onPressed: () {
-                                        Get.to(Signup());
-                                      },
-                                      child: Text("Signup",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Visibility(
+                                visible: otpvisibile,
+                                child: TextField(
+                                  obscureText: isvisible,
+                                  focusNode: passkeyfocus,
+                                  //autofocus: true,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      // border: OutlineInputBorder(
+
+                                      // ),
+
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.black, width: 1.0),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade400,
+                                            width: 1.0),
+                                      ),
+                                      hintText: 'Enter your OTP',
+                                      labelText: 'OTP',
+                                      prefixIcon: Icon(
+                                        Icons.lock,
+                                        color: Colors.black,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          icon: Icon(
+                                            isvisible
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              isvisible = !isvisible;
+
+                                              log("=================fggfg==============>$isvisible");
+                                            });
+                                          })),
+                                ),
+                              ),
+                              Visibility(
+                                child: TextButton(
+                                    onPressed: () {
+                                      //FocusManager.instance.primaryFocus ?.unfocus();
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ForgetPass()));
+                                    },
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text("Forget Password",
                                           style: TextStyle(
                                               fontSize: 15,
-                                              color: Colors.grey.shade700))),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            )
-                          ],
+                                              color: Colors.grey.shade700)),
+                                    )),
+                              ),
+                              SizedBox(
+                                height: height / 100,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 100,
+                                  child: Visibility(
+                                    visible: mobilevisible,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          otpvisibile = !otpvisibile;
+                                          mobilevisible = !mobilevisible;
+                                          //
+                                          //    mobilevisible = false;
+                                        });
+                                        log("          otp visible      ${otpvisibile}");
+                                        // FocusManager.instance.primaryFocus ?.unfocus();
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             HomePage()));
+                                      },
+
+                                      // style: ElevatedButton.styleFrom(
+                                      //     backgroundColor:
+                                      //         Color.fromRGBO(250, 250, 250, 0)),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Color.fromARGB(
+                                                    255, 232, 232, 230)),
+                                      ),
+                                      child: Text("OTP"),
+                                    ),
+                                  )),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      mobilevisible = !mobilevisible;
+                                      otpvisibile = !otpvisibile;
+                                    });
+                                  },
+                                  child: Text("Login")),
+                              SizedBox(
+                                height: height / 100,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text("Don't have account",
+                                      style: TextStyle(fontSize: 15)),
+                                  Center(
+                                    child: TextButton(
+                                        onPressed: () {
+                                          //FocusManager.instance.primaryFocus ?.unfocus();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Signup()));
+                                        },
+                                        child: Text("Signup",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.grey.shade700))),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
+
+        //
       ),
     );
   }
