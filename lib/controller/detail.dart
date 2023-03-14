@@ -7,6 +7,8 @@ class MoveDetails extends GetxController {
   final colorbox = GetStorage();
   final cardbackgroundcolor = GetStorage();
   final movingController = TextEditingController();
+
+   final colorController = TextEditingController();
   final messageController = TextEditingController();
   Color? colorcontroller = Colors.white;
   late final int? count;

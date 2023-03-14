@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:login/util/colors.dart';
 
 import 'package:login/view/home/homepage.dart';
@@ -13,19 +15,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ReminderSet extends StatefulWidget {
   ReminderSet({super.key});
- 
+
   @override
   State<ReminderSet> createState() => _ReminderSetState();
 }
 
 class _ReminderSetState extends State<ReminderSet> {
-  CollectionReference carddetails = FirebaseFirestore.instance.collection('carddetails');
+  
+
+ 
+  CollectionReference carddetails =
+      FirebaseFirestore.instance.collection('carddetails');
   var colcall = Colors.white;
   int colorIndex = 0;
 
   bool colValue = false;
   int colIndex = 0;
   var colcode;
+
+  String timestore = "12:00 AM";
+
+  String dateStore = 'mmddyy';
 
   DateTime dateOfDay = DateTime.now();
   // var m = dateOfDay.month;
@@ -64,14 +74,15 @@ class _ReminderSetState extends State<ReminderSet> {
 
   DateTime? newDate;
   getDAte() async {
-    newDate = await showDatePicker( 
-      
+    newDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
     setState(() {
       dateOfDay = newDate!;
+
+
       getMonth = monthname[dateOfDay.month - 1];
     });
   }
@@ -89,6 +100,9 @@ class _ReminderSetState extends State<ReminderSet> {
         .then((value) {
       setState(() {
         _timeOfDay = value!;
+        timestore = _timeOfDay.format(context).toString();
+
+        log("fgfsgd==============timestring===============$timestore");
         timeContainerColor = Colors.grey;
         if (_timeOfDay == null) return;
       });
@@ -105,7 +119,10 @@ class _ReminderSetState extends State<ReminderSet> {
         backgroundColor: Colors.white10,
         title: Text("  "),
       ),
-      body: Container(
+      body:
+      
+      
+       Container(
         color: colcall.withOpacity(0.1),
         width: Get.width,
         height: Get.height,
@@ -372,14 +389,15 @@ class _ReminderSetState extends State<ReminderSet> {
                         onPrimary: Colors.white,
                         elevation: 1),
                     onPressed: () async {
-                                await carddetails
-                                    .add({
-                                      'title': _movingController.movingController.text,
-                                      'message':_movingController.messageController.text,
-                                    })
-                                    .then((value) => print("User Added"))
-                                    .catchError((error) =>
-                                        print("Failed to add user: $error"));
+                      await carddetails
+                          .add({
+                            'title': _movingController.movingController.text,
+                            'message': _movingController.messageController.text,
+                            'time': timestore
+                          })
+                          .then((value) => print("User Added"))
+                          .catchError(
+                              (error) => print("Failed to add user: $error"));
 
                       _incrementCounter;
                       MoveDetails().boxx.write(
@@ -397,6 +415,8 @@ class _ReminderSetState extends State<ReminderSet> {
                               .text
                               .toString()
                               .trim());
+                      MoveDetails().boxx.write('time', timestore.toString());
+
                       log("ggdgdgdgfgdfgd          ===========>   ${_movingController.movingController.text.toString()}  ");
 
                       SharedPreferences prefs =
@@ -407,9 +427,7 @@ class _ReminderSetState extends State<ReminderSet> {
                       //     .cardbackgroundcolor
                       //     .write('colorname', MoveDetails().colorcontroller);
                       // log("ggdgdgdgfgdfgd      colorrrrrrr    ===========>   ${colcode}  ");
-                     
-                     
-                     
+
                       Get.to(HomePage());
                     },
                     child: Text(
@@ -422,5 +440,8 @@ class _ReminderSetState extends State<ReminderSet> {
         ),
       ),
     );
+
+
+  
   }
 }
